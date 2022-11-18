@@ -1,0 +1,28 @@
+{
+  "name": "projeto14-mywallet-back",
+  "version": "1.0.0",
+  "description": "Backend do projeto  mywallet",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gustavo-de-assis/projeto14-mywallet-back.git"
+  },
+  "author": "Gustavo de Assis Siqueira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gustavo-de-assis/projeto14-mywallet-back/issues"
+  },
+  "homepage": "https://github.com/gustavo-de-assis/projeto14-mywallet-back#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
