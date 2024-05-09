@@ -1,34 +1,32 @@
-import { transactionsCollection, usersCollection } from "../database/db";
+import transactionService from "../services/transaction.service.js";
 
-export async function postTransactions(req, res){
-    //compare user id
+export async function createTransaction(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "");
+  const transactionData = req.body;
 
-    const {user} = req.headers;
-
-    
-    const validation = messageSchema.validate(req.body, { abortEarly: true });
-    
-    if(validation.error){
-        res.sendStatus(422);
-        return;
+  try {
+    await transactionService.createTransaction({ token, transactionData });
+    return res.status(201).send("Transaction created!");
+  } catch (error) {
+    if (error.name === "UnauthorizedError") {
+      return res.status(401).send(error.message);
     }
-    
-    
-    try {
-        await transactionsCollection.insertOne(transaction)
-        res.status(201).send("Success!")
-    }
-    catch(err) {
-        res.status(500).send("Error!")
-    }
-
+    return res.sendStatus(500);
+  }
 }
-export async function getTransactions(req, res){
-    //compare user id
-    try {
-        const transactions = await transactionsCollection.find().toArray();
-        res.send(transactions).status(200);
-    }catch (err){
-        res.sendStatus(500);
+
+export async function getUserTransactions(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "");
+
+  try {
+    const transactions = await transactionService.getUserTransactions(token);
+    return res.status(200).send(transactions);
+  } catch (error) {
+    if (error.name === "UnauthorizedError") {
+      return res.status(401).send(error.message);
     }
+    return res.sendStatus(500);
+  }
 }

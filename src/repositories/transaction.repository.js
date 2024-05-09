@@ -11,3 +11,10 @@ async function findUserTransactions(userId) {
 
   return transactions;
 }
+
+const transactionRepository = {
+  insertTransaction,
+  findUserTransactions,
+};
+
+export default transactionRepository;
