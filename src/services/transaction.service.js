@@ -32,10 +32,28 @@ async function deleteTransaction(data) {
   return await transactionRepository.deleteTransaction(transaction._id);
 }
 
+async function updateTransaction(data) {
+  const { token, id, updatedData } = data;
+  const user = await userService.getUser(token);
+
+  const transaction = await transactionRepository.findTransaction({
+    id,
+    userId: user._id,
+  });
+
+  if (!transaction) throw notFoundError();
+  const transactionId = transaction._id;
+  return await transactionRepository.updateTransaction({
+    id: transactionId,
+    updatedData,
+  });
+}
+
 const transactionService = {
   createTransaction,
   getUserTransactions,
   deleteTransaction,
+  updateTransaction,
 };
 
 export default transactionService;

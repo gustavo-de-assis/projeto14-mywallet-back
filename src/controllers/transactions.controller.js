@@ -48,3 +48,23 @@ export async function deleteTransaction(req, res) {
     return res.sendStatus(500);
   }
 }
+
+export async function updateTransaction(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "");
+  const { id } = req.params;
+  const updatedData = req.body;
+
+  try {
+    await transactionService.updateTransaction({ token, id, updatedData });
+    return res.status(201).send("Updated Transaction!");
+  } catch (error) {
+    if (error.name === "UnauthorizedError") {
+      return res.status(401).send(error.message);
+    }
+    if (error.name === "NotFoundError") {
+      return res.status(404).send(error.message);
+    }
+    return res.sendStatus(500);
+  }
+}
