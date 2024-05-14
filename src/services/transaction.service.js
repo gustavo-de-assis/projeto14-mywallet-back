@@ -1,30 +1,24 @@
 import { notFoundError } from "../errors/not-found-error.js";
 import transactionRepository from "../repositories/transaction.repository.js";
-import userService from "./auth.service.js";
 
 async function createTransaction(data) {
-  const { token, transactionData } = data;
-  const user = await userService.getUser(token);
-
+  const { userId, transactionData } = data;
   await transactionRepository.insertTransaction({
-    userId: user._id,
+    userId,
     ...transactionData,
   });
 }
 
-async function getUserTransactions(token) {
-  const user = await userService.getUser(token);
-
-  return await transactionRepository.findUserTransactions(user._id);
+async function getUserTransactions(userId) {
+  return await transactionRepository.findUserTransactions(userId);
 }
 
 async function deleteTransaction(data) {
-  const { token, id } = data;
-  const user = await userService.getUser(token);
+  const { id, userId } = data;
 
   const transaction = await transactionRepository.findTransaction({
     id,
-    userId: user._id,
+    userId,
   });
 
   if (!transaction) throw notFoundError();
@@ -33,12 +27,11 @@ async function deleteTransaction(data) {
 }
 
 async function updateTransaction(data) {
-  const { token, id, updatedData } = data;
-  const user = await userService.getUser(token);
+  const { userId, id, updatedData } = data;
 
   const transaction = await transactionRepository.findTransaction({
     id,
-    userId: user._id,
+    userId,
   });
 
   if (!transaction) throw notFoundError();

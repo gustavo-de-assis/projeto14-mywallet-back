@@ -7,6 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(authRouter);
 app.use(transactionRouter);
+app.use(authRouter);
 app.listen(5000, console.log("Server running at port 5000"));
